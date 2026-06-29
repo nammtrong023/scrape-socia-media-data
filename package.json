@@ -1,0 +1,9 @@
+{
+  "name": "scrape-social-media-data",
+  "version": "1.1.0",
+  "description": "Chrome extension: export TikTok comments, Shopee reviews, Facebook/Instagram data",
+  "private": true,
+  "scripts": {
+    "zip": "zip -r extension.zip . --exclude '*.git*' --exclude 'node_modules/*' --exclude '*.zip'"
+  }
+}

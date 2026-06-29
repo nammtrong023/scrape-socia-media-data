@@ -1,0 +1,104 @@
+{
+  "manifest_version": 3,
+  "name": "Review Research Exporter & Sorter",
+  "description": "Export TikTok comments, Shopee reviews, Facebook comments, and sort profiles/feeds on TikTok, Instagram, and Facebook.",
+  "version": "1.1.0",
+  "permissions": ["activeTab", "scripting", "downloads", "tabs", "storage", "sidePanel"],
+  "host_permissions": [
+    "https://www.tiktok.com/*",
+    "https://*.tiktok.com/*",
+    "https://shopee.vn/*",
+    "https://*.shopee.vn/*",
+    "https://www.facebook.com/*",
+    "https://*.facebook.com/*",
+    "https://*.fbcdn.net/*",
+    "https://*.fbsbx.com/*",
+    "https://api.letclone.ai/*",
+    "https://www.instagram.com/*",
+    "https://*.instagram.com/*",
+    "https://cobalt.tools/*"
+  ],
+  "action": {
+    "default_title": "Exporter & Sorter",
+    "default_icon": {
+      "16": "Icons/icon16.png",
+      "48": "Icons/icon48.png",
+      "128": "Icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "Icons/icon16.png",
+    "48": "Icons/icon48.png",
+    "128": "Icons/icon128.png"
+  },
+  "side_panel": {
+    "default_path": "popup/popup.html"
+  },
+  "background": {
+    "service_worker": "background/index.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.instagram.com/*"
+      ],
+      "css": [
+        "Animate/animate.css",
+        "shared/sf_banner_primitives.css"
+      ],
+      "js": [
+        "lib/xlsx.full.min.js",
+        "platforms/instagram/content.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://www.facebook.com/*"
+      ],
+      "css": [
+        "shared/sf_banner_primitives.css"
+      ],
+      "js": [
+        "lib/xlsx.full.min.js",
+        "platforms/facebook/content.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://www.tiktok.com/*"
+      ],
+      "js": [
+        "lib/xlsx.full.min.js",
+        "platforms/tiktok.js",
+        "platforms/tiktok/collector.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "Icons/logo.png",
+        "Icons/*.png",
+        "Icons/*.svg",
+        "lib/*",
+        "Icons/BannerIcons/*.png",
+        "Icons/BannerIconNew/*.svg",
+        "Icons/ButtonIcons/*.svg",
+        "Icons/Hover/*.png",
+        "Icons/ZeroStateIcons/*",
+        "platforms/instagram/script_instagram.js",
+        "platforms/instagram/explore_sort_instagram.js",
+        "platforms/instagram/saved_sort_instagram.js",
+        "platforms/facebook/script_facebook.js"
+      ],
+      "matches": [
+        "https://www.instagram.com/*",
+        "https://www.facebook.com/*"
+      ]
+    }
+  ]
+}

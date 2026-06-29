@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Data Scraper</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <div class="brand">
+          <span class="brand-mark"><img src="../Icons/astroid.svg" alt=""></span>
+          <div>
+            <strong>Data Scraper</strong>
+            <span>Multi-platform scraper</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <span id="globalStatus"></span>
+          <button id="themeToggle" class="icon-button" type="button" aria-label="Toggle theme" title="Toggle theme">
+            <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12ZM12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+            <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5 8.5 8.5 0 1 0 20.5 14.5Z"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="app-body">
+        <nav class="side-nav" aria-label="Platforms">
+          <button class="tab-btn" data-tab="tiktok" id="tabTikTok" title="TikTok">
+            <img src="../Icons/ZeroStateIcons/tiktok.svg" alt="">
+            <span>TikTok</span>
+          </button>
+          <button class="tab-btn" data-tab="shopee" id="tabShopee" title="Shopee">
+            <img src="../Icons/shopping-bag.svg" alt="">
+            <span>Shopee</span>
+          </button>
+          <button class="tab-btn" data-tab="facebook" id="tabFacebook" title="Facebook">
+            <img src="../Icons/ZeroStateIcons/facebook.svg" alt="">
+            <span>FB</span>
+          </button>
+          <button class="tab-btn" data-tab="instagram" id="tabInstagram" title="Instagram">
+            <img src="../Icons/ZeroStateIcons/Insta.svg" alt="">
+            <span>Insta</span>
+          </button>
+          <button class="tab-btn" data-tab="sortfeed" id="tabSortFeed" title="Sort Feed">
+            <img src="../Icons/popupIcons/sortPopup.svg" alt="">
+            <span>Sort</span>
+          </button>
+        </nav>
+
+        <main class="panel-region">
+          <!-- TikTok Panel -->
+          <section id="tiktokPanel" class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="platform-badge">TikTok</span>
+                <strong>Bulk comments</strong>
+              </div>
+              <small>Paste video URLs</small>
+            </div>
+            
+            <div class="metrics-list">
+              <div class="metric-row">
+                <span>Total comments</span>
+                <strong id="count">0</strong>
+              </div>
+              <div class="metric-row">
+                <span>Videos processed</span>
+                <strong id="progress">0/0</strong>
+              </div>
+            </div>
+
+            <label class="section" for="urls">
+              <span>TikTok Video URLs</span>
+              <textarea id="urls" rows="4" placeholder="https://www.tiktok.com/@user/video/1234567890"></textarea>
+            </label>
+
+            <div class="action-grid">
+              <button class="btn primary" id="start" type="button">
+                <span>Start</span>
+                <span class="keycap">⏎</span>
+              </button>
+              <button class="btn" id="pause" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+                <span>Pause</span>
+              </button>
+              <button class="btn" id="resume" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg>
+                <span>Resume</span>
+              </button>
+              <button class="btn danger" id="clear" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+                <span>Clear</span>
+              </button>
+            </div>
+
+            <div class="data-footer">
+              <span>Data management</span>
+              <button class="btn" id="exportXlsx" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+                <span>Export XLSX</span>
+              </button>
+              <button id="exportCsv" type="button" hidden>Export CSV</button>
+            </div>
+
+            <p id="hint" class="hint-text">Paste TikTok video URLs, then start a batch.</p>
+          </section>
+
+          <!-- Shopee Panel -->
+          <section id="shopeePanel" class="panel" hidden>
+            <div class="panel-header">
+              <div>
+                <span class="platform-badge">Shopee</span>
+                <strong>Product reviews</strong>
+              </div>
+              <small>Active product tab</small>
+            </div>
+
+            <p class="callout">Open a Shopee product page in the active tab to scrape reviews.</p>
+
+            <div class="metrics-list">
+              <div class="metric-row">
+                <span>Reviews scraped</span>
+                <strong id="shopeeCount">0</strong>
+              </div>
+              <div class="metric-row">
+                <span>Status</span>
+                <strong id="shopeeStatus">Idle</strong>
+              </div>
+            </div>
+
+            <div class="section">
+              <span>Active Shopee Product</span>
+              <p id="shopeeUrl" class="url-display">Open a Shopee product page.</p>
+            </div>
+
+            <button class="btn primary full" id="scrapeShopee" type="button">
+              <span>Scrape Reviews</span>
+              <span class="keycap">⏎</span>
+            </button>
+
+            <div class="data-footer">
+              <span>Data management</span>
+              <div class="action-grid">
+                <button class="btn" id="exportShopeeXlsx" type="button">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+                  <span>Export XLSX</span>
+                </button>
+                <button class="btn danger" id="clearShopee" type="button">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+                  <span>Clear Data</span>
+                </button>
+              </div>
+              <button id="exportShopeeCsv" type="button" hidden>Export CSV</button>
+            </div>
+
+            <p id="shopeeHint" class="hint-text">Open a Shopee product page, then scrape reviews.</p>
+          </section>
+
+          <!-- Facebook Panel -->
+          <section id="facebookPanel" class="panel" hidden>
+            <div class="panel-header">
+              <div>
+                <span class="platform-badge">Facebook</span>
+                <strong>Comments & Reels</strong>
+              </div>
+              <small>Comments + SRT</small>
+            </div>
+
+            <div class="metrics-list">
+              <div class="metric-row">
+                <span>Items</span>
+                <strong id="fbCount">0</strong>
+              </div>
+              <div class="metric-row">
+                <span>Status</span>
+                <strong id="fbStatus">Idle</strong>
+              </div>
+            </div>
+
+            <div class="section">
+              <span>Active FB Target</span>
+              <p id="fbUrl" class="url-display">Open a Facebook post page.</p>
+            </div>
+
+            <label class="section" for="fbReelsUrls">
+              <span>Bulk Facebook URLs</span>
+              <textarea id="fbReelsUrls" rows="4" placeholder="https://www.facebook.com/reel/1234567890"></textarea>
+            </label>
+
+            <div class="action-grid">
+              <button class="btn primary" id="startFbTranscript" type="button">
+                <span>Create Transcript</span>
+                <span class="keycap">⏎</span>
+              </button>
+              <button class="btn" id="scrapeFacebook" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+                <span>Scrape Comments</span>
+              </button>
+            </div>
+
+            <div class="data-footer">
+              <span>Data management</span>
+              <div class="action-grid">
+                <button class="btn" id="exportFbXlsx" type="button">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+                  <span>Export XLSX</span>
+                </button>
+                <button class="btn danger" id="clearFacebook" type="button">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+                  <span>Clear Data</span>
+                </button>
+              </div>
+              <button id="exportFbCsv" type="button" hidden>Export CSV</button>
+              <button id="exportFbSrt" type="button" hidden>Export SRT</button>
+            </div>
+
+            <p id="fbHint" class="hint-text">Open a Facebook post, then scrape comments.</p>
+          </section>
+
+          <!-- Instagram Panel -->
+          <section id="instagramPanel" class="panel" hidden>
+            <div class="panel-header">
+              <div>
+                <span class="platform-badge">Instagram</span>
+                <strong>Reels transcripts</strong>
+              </div>
+              <small>SRT generator</small>
+            </div>
+
+            <div class="metrics-list">
+              <div class="metric-row">
+                <span>Transcripts</span>
+                <strong id="igCount">0</strong>
+              </div>
+              <div class="metric-row">
+                <span>Status</span>
+                <strong id="igStatus">Idle</strong>
+              </div>
+            </div>
+
+            <label class="section" for="igReelsUrls">
+              <span>Bulk Instagram URLs</span>
+              <textarea id="igReelsUrls" rows="4" placeholder="https://www.instagram.com/reel/1234567890"></textarea>
+            </label>
+
+            <button class="btn primary full" id="startIgTranscript" type="button">
+              <span>Create Transcript</span>
+              <span class="keycap">⏎</span>
+            </button>
+
+            <div class="data-footer">
+              <span>Data management</span>
+              <div class="action-grid">
+                <button class="btn" id="exportIgXlsx" type="button">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+                  <span>Export XLSX</span>
+                </button>
+                <button class="btn danger" id="clearInstagram" type="button">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+                  <span>Clear Data</span>
+                </button>
+              </div>
+              <button id="exportIgCsv" type="button" hidden>Export CSV</button>
+              <button id="exportIgSrt" type="button" hidden>Export SRT</button>
+            </div>
+
+            <p id="igHint" class="hint-text">Paste Instagram Reel URLs, then create transcripts.</p>
+          </section>
+
+          <!-- Sort Feed Panel -->
+          <section id="sortfeedPanel" class="panel" hidden>
+            <div class="panel-header">
+              <div>
+                <span class="platform-badge">Sort Feed</span>
+                <strong>Profile sorter</strong>
+              </div>
+              <small>Instagram / Facebook</small>
+            </div>
+
+            <div class="segmented">
+              <button id="modeItems" type="button" class="active">Posts</button>
+              <button id="modeDates" type="button">Date</button>
+            </div>
+
+            <div id="itemsRow" class="section">
+              <span>Limit</span>
+              <select id="itemSelection">
+                <option value="25_reels">Latest 25 Posts</option>
+                <option value="50_reels">Latest 50 Posts</option>
+                <option value="100_reels">Latest 100 Posts</option>
+                <option value="200_reels">Latest 200 Posts</option>
+                <option value="1000_reels">Latest 1K Posts</option>
+                <option value="all_reels" selected>All Posts</option>
+              </select>
+            </div>
+
+            <div id="datesRow" class="section" hidden>
+              <span>Date range</span>
+              <select id="dateSelection">
+                <option value="1_month">1 Month Back</option>
+                <option value="3_month" selected>3 Months Back</option>
+                <option value="all_reels">All Posts</option>
+              </select>
+            </div>
+
+            <div class="sort-list">
+              <button data-sort="likes" type="button" class="sort-btn" id="sortLikes">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+                <span>Likes</span>
+              </button>
+              <button data-sort="views" type="button" class="sort-btn active" id="sortViews">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></svg>
+                <span>Views</span>
+              </button>
+              <button data-sort="comments" type="button" class="sort-btn" id="sortComments">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z"/></svg>
+                <span>Comments</span>
+              </button>
+              <button data-sort="oldest" type="button" class="sort-btn" id="sortOldest" hidden>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v6l4 2"/><path d="M21 12a9 9 0 1 1-9-9"/></svg>
+                <span>Oldest</span>
+              </button>
+            </div>
+
+            <div class="status-container">
+              <div class="status-header">
+                <span id="platform">Detecting platform...</span>
+                <span id="message">Ready.</span>
+              </div>
+              <progress id="sortProgress" max="100" value="0"></progress>
+            </div>
+            
+            <button id="sharesButton" type="button" hidden>Shares</button>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="../lib/xlsx.full.min.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
